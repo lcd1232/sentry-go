@@ -166,6 +166,27 @@ func Test_entryToEvent(t *testing.T) {
 				Logger: "logrus",
 			},
 		},
+		"sentry request": {
+			entry: &logrus.Entry{
+				Data: map[string]any{
+					FieldRequest: &sentry.Request{
+						URL:     "http://example.com",
+						Method:  http.MethodGet,
+						Headers: map[string]string{"Host": "example.com"},
+					},
+				},
+			},
+			want: &sentry.Event{
+				Level: "fatal",
+				Extra: map[string]any{},
+				Request: &sentry.Request{
+					URL:     "http://example.com/",
+					Method:  http.MethodGet,
+					Headers: map[string]string{"Host": "example.com"},
+				},
+				Logger: "logrus",
+			},
+		},
 		"error": {
 			entry: &logrus.Entry{
 				Data: map[string]any{
