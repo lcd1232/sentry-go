@@ -172,9 +172,13 @@ func (h *Hook) entryToEvent(l *logrus.Entry) *sentry.Event {
 	}
 
 	key := h.key(FieldRequest)
-	if req, ok := s.Extra[key].(*http.Request); ok {
+	switch req := s.Extra[key].(type) {
+	case *http.Request:
 		delete(s.Extra, key)
 		s.Request = sentry.NewRequest(req)
+	case *sentry.Request:
+		delete(s.Extra, key)
+		s.Request = req
 	}
 
 	if err, ok := s.Extra[logrus.ErrorKey].(error); ok {

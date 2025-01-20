@@ -170,7 +170,7 @@ func Test_entryToEvent(t *testing.T) {
 			entry: &logrus.Entry{
 				Data: map[string]any{
 					FieldRequest: &sentry.Request{
-						URL:     "http://example.com",
+						URL:     "http://example.com/",
 						Method:  http.MethodGet,
 						Headers: map[string]string{"Host": "example.com"},
 					},
